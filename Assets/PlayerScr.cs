@@ -55,16 +55,13 @@ public class PlayerScr : MonoBehaviour
     {
         jumpFlag = false;
 
-        //Debug.Log(plate1.breakpoint);
-        //Debug.Log(plate2.breakpoint);
-        //Debug.Log(plate3.breakpoint);
-        //Debug.Log(plate4.breakpoint);
 
         //plateに当たったか？
         if (collision.gameObject.name == "plate")
         {
             // var plate = plateScr.plate;
-           
+            
+
             var playerutil = playerUtilScr.utils;
 
             if (10 < playerutil.breakpower)
