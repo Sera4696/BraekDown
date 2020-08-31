@@ -14,6 +14,8 @@ public class PlayerScr : MonoBehaviour
     public bool plateFlag;
 
     private bool jumpFlag;
+    private bool reboundFlag;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,7 @@ public class PlayerScr : MonoBehaviour
         player = this;
         rb = GetComponent<Rigidbody>();
         plateFlag = false;
+        reboundFlag = false;
     }
 
     // Update is called once per frame
@@ -47,7 +50,6 @@ public class PlayerScr : MonoBehaviour
 
         transform.localRotation = Quaternion.identity;
         
-
     }
 
 
@@ -57,21 +59,39 @@ public class PlayerScr : MonoBehaviour
 
 
         //plateに当たったか？
-        if (collision.gameObject.name == "plate")
+        if (collision.transform.tag == "floortag")
+        {
+            reboundFlag = false;
+        }
+
+            if (collision.gameObject.name == "plate")
         {
             // var plate = plateScr.plate;
             
 
             var playerutil = playerUtilScr.utils;
 
-            if (10 < playerutil.breakpower)
+            if (plateScr.plate.breakpoint < playerutil.breakpower)
             {
                 Destroy(collision.gameObject);
             }
 
+            if (plateScr.plate.breakpoint > playerutil.breakpower)
+            {
+                if(reboundFlag == false)
+                {
+                    rb.velocity = Vector3.up * playerutil.breakpower * 1.5f;
+                    reboundFlag = true;
+                }
 
-        //Debug.Log("poo");
-        plateFlag = true;
+                else if(reboundFlag == true)
+                {
+                    reboundFlag = false;
+                }
+            }
+
+            //Debug.Log("poo");
+            plateFlag = true;
             return;
         }
         

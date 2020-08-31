@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class plateScr : MonoBehaviour
 {
-    public float breakpoint;
+    [SerializeField] public float breakpoint;
 
     public static plateScr plate;
     // Start is called before the first frame update
@@ -16,8 +16,6 @@ public class plateScr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var utils = playerUtilScr.utils;
-
-      
+        var utils = playerUtilScr.utils;    
     }
 }
