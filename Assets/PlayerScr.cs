@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PlayerScr : MonoBehaviour
 {
+    [SerializeField] private Vector3 velocity;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float applySpeed = 0.2f;
 
-    [SerializeField] private float movespeed;
+    [SerializeField] private PlayerFollowCamera refCamera;
     private Rigidbody rb;
 
     public float jumpSpeed;
@@ -29,8 +32,34 @@ public class PlayerScr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float moveH = Input.GetAxis("Horizontal");
-        float moveV = Input.GetAxis("Vertical");
+        //float moveH = Input.GetAxis("Horizontal");
+        //float moveV = Input.GetAxis("Vertical");
+
+        velocity = Vector3.zero;
+        if (Input.GetKey(KeyCode.W))
+            velocity.z += 1;
+        if (Input.GetKey(KeyCode.A))
+            velocity.x -= 1;
+        if (Input.GetKey(KeyCode.S))
+            velocity.z -= 1;
+        if (Input.GetKey(KeyCode.D))
+            velocity.x += 1;
+
+        velocity = velocity.normalized * moveSpeed * Time.deltaTime;
+
+        if (velocity.magnitude > 0)
+        {
+            // プレイヤーの回転(transform.rotation)の更新
+            // 無回転状態のプレイヤーのZ+方向(後頭部)を、移動の反対方向(-velocity)に回す回転とします
+
+            transform.rotation = Quaternion.Slerp(transform.rotation,
+                                                  Quaternion.LookRotation(refCamera.hRotation * -velocity),
+                                                  applySpeed);
+
+            // プレイヤーの位置(transform.position)の更新
+            // 移動方向ベクトル(velocity)を足し込みます
+            transform.position += refCamera.hRotation * velocity;         
+        }
 
 
         //float moveJ = Input.GetAxis("Jump");
@@ -44,11 +73,11 @@ public class PlayerScr : MonoBehaviour
 
 
 
-        transform.Translate(moveH/15,0,moveV/15);
+        //transform.Translate(moveH/15,0,moveV/15);
         //rb.AddForce(0,0,0);
        // rigidbody.AddForce(movement * movespeed);
 
-        transform.localRotation = Quaternion.identity;
+        //transform.localRotation = Quaternion.identity;
         
     }
 
@@ -78,13 +107,13 @@ public class PlayerScr : MonoBehaviour
 
             if (plateScr.plate.breakpoint > playerutil.breakpower)
             {
-                if(reboundFlag == false)
+                if (reboundFlag == false)
                 {
                     rb.velocity = Vector3.up * playerutil.breakpower * 1.5f;
                     reboundFlag = true;
                 }
 
-                else if(reboundFlag == true)
+                else if (reboundFlag == true)
                 {
                     reboundFlag = false;
                 }
