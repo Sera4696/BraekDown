@@ -19,16 +19,15 @@ public class plateScr : MonoBehaviour
         var utils = playerUtilScr.utils;    
     }
 
-
     private void OnCollisionEnter(Collision collision)
     {
-        var player = playerUtilScr.utils;
-       // var Player = PlayerScr.player;
+        var playerutils = playerUtilScr.utils;
+        // var Player = PlayerScr.player;
 
         //もしも、playerの持つ力より耐久値が小さければ
-        if(player.breakpower >= breakpoint)
+        if (playerutils.breakpower >= breakpoint)
         {
-           
+
             //Debug.Log(breakpoint);
             Destroy(gameObject);
         }

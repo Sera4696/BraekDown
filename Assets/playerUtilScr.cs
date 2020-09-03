@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class playerUtilScr : MonoBehaviour
 {
-   
     public float breakpower;
     public static playerUtilScr utils;
 
     public float beforeplayerpos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,8 +21,16 @@ public class playerUtilScr : MonoBehaviour
     {
         var player = PlayerScr.player;
 
+        ////力がplayerのY軸よりも小さかったらY軸を代入
+        //if(player.transform.position.y > breakpower)
+        //{
+        //    breakpower = player.transform.position.y;
+        //    //Debug.Log(breakpower);
+        //}
+
+
         //今のポジションが1フレーム前のポジションよりデカかったら
-        if(player.transform.position.y > beforeplayerpos)
+        if (player.transform.position.y > beforeplayerpos)
         {
             //今のポジション　ー　1フレーム前のポジション
             float power = player.transform.position.y - beforeplayerpos;
@@ -30,11 +38,8 @@ public class playerUtilScr : MonoBehaviour
             beforeplayerpos = player.transform.position.y;
             //誤差を＋
             breakpower += power;
-            
-        }
 
-      
-      
+        }
 
         //plateに当たったら力を0にする
         if (player.plateFlag == true)
@@ -44,6 +49,14 @@ public class playerUtilScr : MonoBehaviour
             //Debug.Log(player.plateFlag);
             player.plateFlag = false;
         }
+
+        ////plateに当たったら力を0にする
+        //if (player.plateFlag == true)
+        //{
+        //    breakpower = 0;
+        //    //Debug.Log(player.plateFlag);
+        //    player.plateFlag = false;
+        //}
 
     }
 
