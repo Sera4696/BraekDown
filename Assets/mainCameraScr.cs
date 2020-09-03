@@ -16,17 +16,5 @@ public class mainCameraScr : MonoBehaviour
     void Update()
     {
         transform.position = player.transform.position + offset;
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            
-            transform.RotateAround(player.transform.position, Vector3.up, -5f);
-        }
-        
-        else if (Input.GetKey(KeyCode.RightShift))
-        {
-            //ユニティちゃんを中心に5f度回転
-            transform.RotateAround(player.transform.position, Vector3.up, 5f);
-        }
     }
 }
