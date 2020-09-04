@@ -45,7 +45,16 @@ public class playerUtilScr : MonoBehaviour
         if (player.plateFlag == true)
         {
             beforeplayerpos = player.transform.position.y;
-            breakpower = 0;
+            if (plateScr.plate.breakpoint < breakpower)
+            {
+                breakpower = breakpower - plateScr.plate.breakpoint;
+            }
+
+            if (plateScr.plate.breakpoint > breakpower)
+            {
+                breakpower = 0;
+            }
+
             //Debug.Log(player.plateFlag);
             player.plateFlag = false;
         }

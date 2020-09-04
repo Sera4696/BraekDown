@@ -17,7 +17,22 @@ public class PlayerScr : MonoBehaviour
     public bool plateFlag;
 
     private bool jumpFlag;
-    private bool reboundFlag;
+    public bool reboundFlag;
+
+    public GameObject floorPrefab;
+
+    //X座標の最小値
+    public float xMinPosition = -10f;
+    //X座標の最大値
+    public float xMaxPosition = 10f;
+    //Y座標の最小値
+    public float yMinPosition = 0f;
+    //Y座標の最大値
+    public float yMaxPosition = 10f;
+    //Z座標の最小値
+    public float zMinPosition = 10f;
+    //Z座標の最大値
+    public float zMaxPosition = 20f;
 
     // Start is called before the first frame update
     void Start()
@@ -32,9 +47,6 @@ public class PlayerScr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //float moveH = Input.GetAxis("Horizontal");
-        //float moveV = Input.GetAxis("Vertical");
-
         velocity = Vector3.zero;
         if (Input.GetKey(KeyCode.W))
             velocity.z += 1;
@@ -61,47 +73,40 @@ public class PlayerScr : MonoBehaviour
             transform.position += refCamera.hRotation * velocity;         
         }
 
-
-        //float moveJ = Input.GetAxis("Jump");
         if (Input.GetButtonDown("Jump") && jumpFlag == false)
         {
             rb.velocity = Vector3.up * jumpSpeed;
             jumpFlag = true;
         }
 
-        //Vector3 movement = new Vector3(moveH/3, 0, moveV/3);
-
-
-
-        //transform.Translate(moveH/15,0,moveV/15);
-        //rb.AddForce(0,0,0);
-       // rigidbody.AddForce(movement * movespeed);
-
         //transform.localRotation = Quaternion.identity;
         
     }
 
-
     private void OnCollisionEnter(Collision collision)
     {
         jumpFlag = false;
-
-
+        Debug.Log(reboundFlag);
         //plateに当たったか？
         if (collision.transform.tag == "floortag")
         {
             reboundFlag = false;
         }
 
-            if (collision.gameObject.name == "plate")
+        if (collision.gameObject.name == "plate")
         {
             // var plate = plateScr.plate;
             
-
             var playerutil = playerUtilScr.utils;
 
             if (plateScr.plate.breakpoint < playerutil.breakpower)
             {
+                reboundFlag = false;
+
+                GameObject Floor = Instantiate(floorPrefab);
+
+                Floor.transform.position = GetRandomPosition();
+
                 Destroy(collision.gameObject);
             }
 
@@ -127,5 +132,15 @@ public class PlayerScr : MonoBehaviour
         plateFlag = false;
     }
 
+    private Vector3 GetRandomPosition()
+    {
+        //それぞれの座標をランダムに生成する
+        float x = Random.Range(xMinPosition, xMaxPosition);
+        float y = Random.Range(yMinPosition, yMaxPosition);
+        float z = Random.Range(zMinPosition, zMaxPosition);
+
+        //Vector3型のPositionを返す
+        return new Vector3(x, y, z);
+    }
 
 }

@@ -30,9 +30,22 @@ public class PlayerFollowCamera : MonoBehaviour
     }
     void LateUpdate()
     {
+        var playerutil = playerUtilScr.utils;
         if (Input.GetMouseButton(0))
             hRotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * turnSpeed, 0);
 
+        if (PlayerScr.player.reboundFlag == true)
+        {
+            //Debug.Log(plateScr.plate.breakpoint);
+            if (playerutil.breakpower >= 1)
+            {
+                vRotation = Quaternion.Euler(90, 0, 0);
+            }
+        }
+        else
+        {
+            vRotation = Quaternion.Euler(30, 0, 0);
+        }
         // カメラの回転(transform.rotation)の更新
         // 方法1 : 垂直回転してから水平回転する合成回転とします
         transform.rotation = hRotation * vRotation;
